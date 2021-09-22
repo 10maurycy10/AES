@@ -2,7 +2,7 @@
 
 ## full algo
 
-## Key genaration [SOON]
+## Key genaration [X]
 
 ## Decript round
 

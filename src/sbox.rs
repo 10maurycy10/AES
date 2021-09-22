@@ -1,3 +1,5 @@
+use crate::State;
+
 // Substitution BOX, a lookup table to optimyze the substitution step
 pub type Sbox = [u8; 256];
 
@@ -10,7 +12,7 @@ fn rot_l8(x: u8,shift: isize) -> u8 {
     ((x) << (shift)) | ((x) >> (8 - (shift)))
 }
 
-// code addapeded from https://en.wikipedia.org/wiki/Rijndael_S-box
+// code adapeded from https://en.wikipedia.org/wiki/Rijndael_S-box
 pub fn make_sub_box() -> Sbox {
 
     let mut sbox: Sbox = [0_u8; 256];

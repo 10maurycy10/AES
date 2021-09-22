@@ -9,8 +9,11 @@ pub fn get_mut_from_state(x: usize, y: usize, state: &mut State) -> &mut u8 {
     state.get_mut(x+y*4).unwrap()
 }
 
+mod g;
+use g::*;
+
 mod sbox;
-use sbox::*;
+pub use sbox::*;
 
 mod shiftrows;
 use shiftrows::*;
@@ -25,13 +28,6 @@ mod mixcol;
 use mixcol::*;
 
 fn main() {
-
-    let mut buffer = [255; 16];
-    mix_col(&[
-        0,1,2,3,
-        4,1,6,7,
-        1,1,10,11,
-        1,1,14,1
-    ],&mut buffer);
-    println!("{:?}",buffer);
+    let sbox = make_sub_box();
+    println!("{:x?}",expand_key(&[0; 32], &sbox));
 }
