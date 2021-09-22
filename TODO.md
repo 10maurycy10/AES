@@ -1,10 +1,10 @@
 # AES (all)
 
-## full algo
+## full algo {X}
 
 ## Key genaration [X]
 
-## Decript round
+## Decript round [X]
 
 ### Substiution [X]
 
@@ -18,7 +18,7 @@
 
 ### Add key [X]
 
-## Encript round [SOON]
+## Encript round [X]
 
 ### Substiution [X]
 
@@ -31,6 +31,12 @@
 ### Sift rows [X]
 
 ### Add key [X]
+
+## Add support for diffrent key sizes
+
+### 256 [X]
+
+### 128 
 
 ## Make random key 
 

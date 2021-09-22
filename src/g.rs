@@ -1,3 +1,5 @@
+// operations in 8 bit https://en.wikipedia.org/wiki/GF(2)
+
 pub fn gadd(a: u8, b: u8) -> u8 {
     a ^ b
 }

@@ -28,8 +28,17 @@ mod mixcol;
 use mixcol::*;
 
 mod round;
+use round::*;
+
+mod alg;
+use alg::*;
 
 fn main() {
     let sbox = make_sub_box();
-    println!("{:x?}", expand_key(&[0; 32], &sbox));
+    let isbox = invert_sub_box(&sbox);
+    let coded = encript_block(b"thisisacoded----",b"BADKEY----------BADKEY----------",&sbox);
+    let decoded = decript_block(&coded,b"BADKEY----------BADKEY----------",&sbox,&isbox);
+    println!("{:x?}", b"thisisacoded----");
+    println!("{:x?}", coded);
+    println!("{:x?}", decoded);
 }
