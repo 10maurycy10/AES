@@ -2,11 +2,11 @@
 pub type State = [u8; 16];
 
 pub fn get_from_state(x: usize, y: usize, state: &State) -> &u8 {
-    &state[x+y*4]
+    &state[x + y * 4]
 }
 
 pub fn get_mut_from_state(x: usize, y: usize, state: &mut State) -> &mut u8 {
-    state.get_mut(x+y*4).unwrap()
+    state.get_mut(x + y * 4).unwrap()
 }
 
 mod g;
@@ -29,5 +29,5 @@ use mixcol::*;
 
 fn main() {
     let sbox = make_sub_box();
-    println!("{:x?}",expand_key(&[0; 32], &sbox));
+    println!("{:x?}", expand_key(&[0; 32], &sbox));
 }
