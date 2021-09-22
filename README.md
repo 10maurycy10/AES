@@ -1,5 +1,5 @@
 # AES
-A toy implementation of AES (WIP)
+A toy implementation of AES (NOW WORKING)
 
 ## What is this
 
