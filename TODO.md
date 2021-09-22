@@ -9,3 +9,5 @@
 ## Make random key 
 
 ## Make rust lib {X}
+
+## MAKE THIS AES [SOON!]
