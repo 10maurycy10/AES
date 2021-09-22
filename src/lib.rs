@@ -33,7 +33,7 @@ use round::*;
 mod alg;
 use alg::*;
 
-pub fn ecb_encript(message: Vec<u8>, key: &[u8; 32]) -> Vec<[u8; 16]> {
+pub fn ecb_encript(message: &Vec<u8>, key: &[u8; 32]) -> Vec<[u8; 16]> {
     let sbox = make_sub_box();
     let mut coded = Vec::new();
     for i in 0..(message.len()/16 + 1) {
@@ -51,7 +51,7 @@ pub fn ecb_encript(message: Vec<u8>, key: &[u8; 32]) -> Vec<[u8; 16]> {
     coded
 }
 
-pub fn ecb_decript(message: Vec<[u8; 16]>, key: &[u8; 32]) -> Vec<u8> {
+pub fn ecb_decript(message: &Vec<[u8; 16]>, key: &[u8; 32]) -> Vec<u8> {
     let sbox = make_sub_box();
     let isbox = invert_sub_box(&sbox);
     let mut coded = Vec::new();
@@ -66,7 +66,7 @@ pub fn ecb_decript(message: Vec<[u8; 16]>, key: &[u8; 32]) -> Vec<u8> {
 fn have_sane_decript() {
     // null padded
     let original = b"This is a message that will take several block";
-    let coded = ecb_encript(original.to_vec(),b"JUNK KEY------------------------");
-    let decoded = ecb_decript(coded,b"JUNK KEY------------------------");
+    let coded = ecb_encript(&original.to_vec(),b"JUNK KEY------------------------");
+    let decoded = ecb_decript(&coded,b"JUNK KEY------------------------");
     assert_eq!(decoded[0..45],original[0..45]);
 }
