@@ -18,7 +18,7 @@
 
 ### Add key [X]
 
-## Encript round
+## Encript round [SOON]
 
 ### Substiution [X]
 
@@ -30,4 +30,8 @@
 
 ### Sift rows [X]
 
-### Add key [X}
+### Add key [X]
+
+## Make random key 
+
+## Make rust lib
