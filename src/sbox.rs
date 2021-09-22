@@ -19,7 +19,7 @@ pub fn make_sub_box() -> Sbox {
     let mut p: u8 = 1;
     let mut q: u8 = 1;
     loop {
-        let x = match (p & 0x80) {
+        let x = match p & 0x80 {
             0 => 0,
             _ => 0x1B,
         };
@@ -29,7 +29,7 @@ pub fn make_sub_box() -> Sbox {
         q ^= q << 1;
         q ^= q << 2;
         q ^= q << 4;
-        q ^= match (q & 0x80) {
+        q ^= match q & 0x80 {
             0 => 0,
             _ => 0x09,
         };

@@ -11,10 +11,10 @@ fn rotate(x: &mut [u8; 4]) {
 // Calculate the rcon used in key expansion
 fn rcon(mut x: u8) -> u8 {
     let mut c = 1_u8;
-    if (x == 0) {
+    if x == 0 {
         return 0;
     }
-    while (x != 1) {
+    while x != 1 {
         c = gmul(c, 2);
         x -= 1;
     }
@@ -37,7 +37,7 @@ pub fn expand_key(input: &[u8; 32], sbox: &[u8; 256]) -> [u8; 240] {
     let mut t = [0_u8; 4];
     let mut c = 32_u8;
     let mut i: u8 = 1;
-    let mut a: u8;
+    let mut _a: u8;
 
     let mut buffer = [0_u8; 240];
 
@@ -45,18 +45,18 @@ pub fn expand_key(input: &[u8; 32], sbox: &[u8; 256]) -> [u8; 240] {
         buffer[i] = input[i]
     }
 
-    while (c < 240) {
+    while c < 240 {
         // Copy the temporary variable over
         for a in 0..4 {
             t[a as usize] = buffer[a as usize + c as usize - 4];
         }
         // Every eight sets, do a complex calculation
-        if (c % 32 == 0) {
+        if c % 32 == 0 {
             schedule_core(&mut t, i, sbox);
             i += 1;
         }
         // For 256-bit keys, we add an extra sbox to the calculation
-        if (c % 32 == 16) {
+        if c % 32 == 16 {
             for a in 0..4 {
                 t[a as usize] = sbox[t[a as usize] as usize];
             }
