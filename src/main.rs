@@ -33,12 +33,36 @@ use round::*;
 mod alg;
 use alg::*;
 
-fn main() {
+fn main()  {
     let sbox = make_sub_box();
-    let isbox = invert_sub_box(&sbox);
-    let coded = encript_block(b"thisisacoded----",b"BADKEY----------BADKEY----------",&sbox);
-    let decoded = decript_block(&coded,b"BADKEY----------BADKEY----------",&sbox,&isbox);
-    println!("{:x?}", b"thisisacoded----");
-    println!("{:x?}", coded);
-    println!("{:x?}", decoded);
+    //let isbox = invert_sub_box(&sbox);
+    
+    // Stuff to include 256 bits from a file
+    use std::convert::TryInto;
+    let key: Vec<u8> = include_bytes!("../keyfile")[0..32].iter().map(|x| *x).collect();
+    let key: [u8; 32] = key.try_into().unwrap();
+
+    // Do some coding
+    let coded_sample = encript_block(b"ThisIsACodeBlock",&key,&sbox);
+    
+    // Stuff to include N bits from a file
+    let secret_message: Vec<u8> = include_bytes!("../puzzle").iter().map(|x| *x).collect();
+    
+    
+    // this sucks
+    for i in 0..(secret_message.len()/16 + 1) {
+        // extract a block from the message
+        let mut buffer = [0_u8; 16];
+        for e in 0..16 {
+            let p = e+i*16;
+            if p < secret_message.len() {
+                buffer[e] = secret_message[p]
+            }
+        }
+        // ECB MODE!!!!!!!!!
+        let puzzle = encript_block(&buffer,&key,&sbox);
+        println!("CODE BLOCK {}: {:x?}",i,puzzle);
+    }
+    
+    println!("{:x?} is 'ThisIsACodeBlock'", coded_sample);
 }
