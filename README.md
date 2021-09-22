@@ -1,6 +1,6 @@
 # AES
-A toy implementation of AES (do not use)
+A toy implementation of AES (WIP)
 
 ## What is this
 
-my atempt at implemeting AES
+my attempt at implemeting AES
