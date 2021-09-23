@@ -1,12 +1,17 @@
-// 2d array of bytes (represented as array of 32 bytes for speed)
+// 2d array of bytes (represented as array of 16 bytes for speed)
+// NOTE the layout is non standard
+// 0    4   8   C
+// 1    5   9   D
+// 2    6   A   E
+// 3    7   B   F
 pub type State = [u8; 16];
 
 pub fn get_from_state(x: usize, y: usize, state: &State) -> &u8 {
-    &state[x + y * 4]
+    &state[4*x + y]
 }
 
 pub fn get_mut_from_state(x: usize, y: usize, state: &mut State) -> &mut u8 {
-    state.get_mut(x + y * 4).unwrap()
+    state.get_mut(x*4 + y).unwrap()
 }
 
 mod g;

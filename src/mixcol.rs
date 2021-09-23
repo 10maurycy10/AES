@@ -3,10 +3,11 @@ use super::State;
 
 pub fn mix_col(a: &State, b: &mut State) {
     for c in 0..4 {
-        b[0 + c]    = gmul(2, a[0 + c]) ^ gmul(3, a[4 + c]) ^ a[8 + c]          ^ a[12 + c];
-        b[4 + c]    = a[0 + c]          ^ gmul(2, a[4 + c]) ^ gmul(3, a[8 + c]) ^ a[12 + c];
-        b[8 + c]    = a[0 + c]          ^ a[4 + c]          ^ gmul(2, a[8 + c]) ^ gmul(3, a[12 + c]);
-        b[12 + c]   = gmul(3, a[0 + c]) ^ a[4 + c]          ^ a[8 + c]          ^ gmul(2, a[12 + c]);
+        let d = c*4;
+        b[0 + d]    = gmul(2, a[0 + d]) ^ gmul(3, a[1 + d]) ^ a[2 + d]          ^ a[3 + d];
+        b[1 + d]    = a[0 + d]          ^ gmul(2, a[1 + d]) ^ gmul(3, a[2 + d]) ^ a[3 + d];
+        b[2 + d]    = a[0 + d]          ^ a[1 + d]          ^ gmul(2, a[2 + d]) ^ gmul(3, a[3 + d]);
+        b[3 + d]    = gmul(3, a[0 + d]) ^ a[1 + d]          ^ a[2 + d]          ^ gmul(2, a[3 + d]);
     }
 }
 
@@ -14,14 +15,15 @@ pub fn mix_col(a: &State, b: &mut State) {
 
 pub fn inverse_mix_col(a: &State, b: &mut State) {
     for c in 0..4 {
-        b[0 + c] =
-            gmul(14, a[0 + c]) ^ gmul(11, a[4 + c]) ^ gmul(13, a[8 + c]) ^ gmul(09, a[12 + c]);
-        b[4 + c] =
-            gmul(09, a[0 + c]) ^ gmul(14, a[4 + c]) ^ gmul(11, a[8 + c]) ^ gmul(13, a[12 + c]);
-        b[8 + c] =
-            gmul(13, a[0 + c]) ^ gmul(09, a[4 + c]) ^ gmul(14, a[8 + c]) ^ gmul(11, a[12 + c]);
-        b[12 + c] =
-            gmul(11, a[0 + c]) ^ gmul(13, a[4 + c]) ^ gmul(09, a[8 + c]) ^ gmul(14, a[12 + c]);
+        let d = c*4;
+        b[0 + d] =
+            gmul(14, a[0 + d]) ^ gmul(11, a[1 + d]) ^ gmul(13, a[2 + d]) ^ gmul(09, a[3 + d]);
+        b[1 + d] =
+            gmul(09, a[0 + d]) ^ gmul(14, a[1 + d]) ^ gmul(11, a[2 + d]) ^ gmul(13, a[3 + d]);
+        b[2 + d] =
+            gmul(13, a[0 + d]) ^ gmul(09, a[1 + d]) ^ gmul(14, a[2 + d]) ^ gmul(11, a[3 + d]);
+        b[3 + d] =
+            gmul(11, a[0 + d]) ^ gmul(13, a[1 + d]) ^ gmul(09, a[2 + d]) ^ gmul(14, a[3 + d]);
     }
 }
 
@@ -38,21 +40,32 @@ fn test_sane_inverse() {
     assert_eq!(init, buffer2);
 }
 
+// utility to convert a 2 d state to the format rijndael uses
+pub fn rotate_state(input: &State) -> State {
+    let mut buffer = [0_u8; 16];
+    for x in 0..4 {
+        for y in 0..4 {
+            buffer[y+x*4] = input[y*4+x];
+        }
+    }
+    return buffer;
+}
+
 // vectors derived from https://www.samiam.org/mix-column.html
 #[test]
 fn test_vec() {
-    let input = [
+    let input = rotate_state(&[
         0xdb, 0xf2, 0x01, 0xc6,
         0x13, 0x0a, 0x01, 0xc6,
         0x53, 0x22, 0x01, 0xc6,
         0x45, 0x5c, 0x01, 0xc6
-    ];
-    let output = [
+    ]);
+    let output = rotate_state(&[
         0x8e, 0x9f, 0x01, 0xc6,
         0x4d, 0xdc, 0x01, 0xc6,
         0xa1, 0x58, 0x01, 0xc6,
         0xbc, 0x9d, 0x01, 0xc6
-    ];
+    ]);
     let mut buffer = [0_u8;16];
     mix_col(&input,&mut buffer);
     assert_eq!(buffer,output);
