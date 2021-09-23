@@ -6,6 +6,7 @@ use super::expand_key;
 pub fn encript_block(mes: &State, key: &[u8; 32], sbox: &[u8; 256]) -> State {
     let expanded_key = expand_key(key,sbox);
     
+    // this bit is fine
     // split the _long_ expanded key into round keys
     let mut split_key = [[0_u8; 16]; 15];
     for i in 0..15 {
@@ -17,21 +18,21 @@ pub fn encript_block(mes: &State, key: &[u8; 32], sbox: &[u8; 256]) -> State {
     let mut b1 = [0_u8; 16];
     let mut b2 = [0_u8; 16];
     
-    encript_round(mes,&split_key[0],&mut b1,sbox,RoundType::First);
+    encript_round(mes,&split_key[0],&mut b1,sbox,RoundType::First); // first round
     
-    encript_round(&mut b1,&split_key[1],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[2],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[3],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[4],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[5],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[6],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[7],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[8],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[9],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[10],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[11],&mut b2,sbox,RoundType::Normal);
-    encript_round(&mut b2,&split_key[12],&mut b1,sbox,RoundType::Normal);
-    encript_round(&mut b1,&split_key[13],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[1],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[2],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[3],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[4],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[5],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[6],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[7],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[8],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[9],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[10],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[11],&mut b2,sbox,RoundType::Normal);
+    encript_round(&b2,&split_key[12],&mut b1,sbox,RoundType::Normal);
+    encript_round(&b1,&split_key[13],&mut b2,sbox,RoundType::Normal);
     
     encript_round(&mut b2,&split_key[14],&mut b1,sbox,RoundType::Last);
 
@@ -54,21 +55,21 @@ pub fn decript_block(mes: &State, key: &[u8; 32], sbox: &[u8; 256], isbox: &[u8;
     
     decript_round(mes,&split_key[14],&mut b2,isbox,RoundType::First);
     
-    decript_round(&mut b2,&split_key[13],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[12],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[11],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[10],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[9],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[8],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[7],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[6],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[5],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[4],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[3],&mut b1,isbox,RoundType::Normal);
-    decript_round(&mut b1,&split_key[2],&mut b2,isbox,RoundType::Normal);
-    decript_round(&mut b2,&split_key[1],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[13],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[12],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[11],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[10],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[9],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[8],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[7],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[6],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[5],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[4],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[3],&mut b1,isbox,RoundType::Normal);
+    decript_round(&b1,&split_key[2],&mut b2,isbox,RoundType::Normal);
+    decript_round(&b2,&split_key[1],&mut b1,isbox,RoundType::Normal);
     
-    decript_round(&mut b1,&split_key[0],&mut b2,isbox,RoundType::Last);
+    decript_round(&b1,&split_key[0],&mut b2,isbox,RoundType::Last);
 
     return b2
 }
